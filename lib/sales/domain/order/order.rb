@@ -17,9 +17,9 @@ module Sales
           @items = []
         end
 
-        def add_item(product_id)
+        def add_item(product_id, price)
           check_if_draft
-          apply ItemAddedToOrder.new(order_id: id, product_id: product_id)
+          apply ItemAddedToOrder.new(order_id: id, price: price.amount_in_cents, product_id: product_id)
         end
 
         def create(customer_id)
