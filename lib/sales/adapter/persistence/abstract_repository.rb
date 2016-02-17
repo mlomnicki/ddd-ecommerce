@@ -25,6 +25,12 @@ module Sales
           end
         end
 
+        def store(aggregate_id)
+          aggregate = load(aggregate_id)
+          yield aggregate
+          save(aggregate)
+        end
+
         private
 
         attr_reader :event_store

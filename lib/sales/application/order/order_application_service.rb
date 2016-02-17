@@ -7,30 +7,26 @@ module Sales
         end
 
         def add_item_to_order(command)
-          with_aggregate(command) do |order|
+          order_repository.store(command.order_id) do |order|
             order.add_item(command.product_id)
           end
         end
 
         def create_order(command)
-          with_aggregate(command) do |order|
+          order_repository.store(command.order_id) do |order|
             order.create(command.customer_id)
           end
         end
 
         def expire_order(command)
-          with_aggregate(command) do |order|
+          order_repository.store(command.order_id) do |order|
             order.expire
           end
         end
 
         private
 
-        def with_aggregate(command)
-          order = @order_repository.load(command.order_id)
-          yield order
-          @order_repository.save(order)
-        end
+        attr_reader :order_repository
       end
     end
   end
