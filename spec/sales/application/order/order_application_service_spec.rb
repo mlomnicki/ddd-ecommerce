@@ -31,7 +31,7 @@ RSpec.describe Sales::Application::Order::OrderApplicationService do
   describe "#create_order" do
     let(:command) { create_order_command }
 
-    it "should create a new order" do
+    it "creates a new order" do
       subject.add_item_to_order(add_item_command)
       subject.create_order(command)
 
@@ -45,7 +45,7 @@ RSpec.describe Sales::Application::Order::OrderApplicationService do
   describe "#add_item_to_order" do
     let(:command) { add_item_command }
 
-    it "should add an item to order" do
+    it "adds an item to order" do
       subject.add_item_to_order(command)
 
       expect(event_store).to publish_events([
