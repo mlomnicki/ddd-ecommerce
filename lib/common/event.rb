@@ -5,5 +5,9 @@ module Common
     def id
       SecureRandom.uuid
     end
+
+    def event_type
+      self.class.name.split("::").last
+    end
   end
 end

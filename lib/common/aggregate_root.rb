@@ -16,11 +16,11 @@ module Common
     private
 
     def apply_event(event)
-      send("apply_#{event_basename(event)}", event)
+      send("apply_#{event_type_underscored(event)}", event)
     end
 
-    def event_basename(event)
-      event.class.name.split("::").last.gsub!(/(.)([A-Z])/,'\1_\2').downcase
+    def event_type_underscored(event)
+      event.event_type.gsub!(/(.)([A-Z])/,'\1_\2').downcase
     end
   end
 end
