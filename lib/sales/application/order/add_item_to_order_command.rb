@@ -1,7 +1,7 @@
 module Sales
   module Application
     module Order
-      class AddItemToOrderCommand < Dry::Data::Struct
+      class AddItemToOrderCommand < Common::Command
         attribute :order_id,   Types::Coercible::Int
         attribute :product_id, Types::Coercible::Int
       end

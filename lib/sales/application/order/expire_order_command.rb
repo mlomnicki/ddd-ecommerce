@@ -1,7 +1,7 @@
 module Sales
   module Application
     module Order
-      class ExpireOrderCommand < Dry::Data::Struct
+      class ExpireOrderCommand < Common::Command
         attribute :order_id, Types::Coercible::Int
       end
     end
