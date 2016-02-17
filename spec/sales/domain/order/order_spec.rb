@@ -46,4 +46,21 @@ RSpec.describe Sales::Domain::Order::Order do
       expect { subject.add_item(product_id) }.to raise_error(described_class::AlreadyCreated)
     end
   end
+
+  describe "#expire" do
+    it "expires an order" do
+      subject.expire
+
+      expect(subject).to raise_events([
+        Sales::Domain::Order::OrderExpired.new(order_id: aggregate_id)
+      ])
+    end
+
+    it "does not allow to expire a created order" do
+      subject.add_item(product_id)
+      subject.create(customer_id)
+
+      expect { subject.expire }.to raise_error(described_class::AlreadyCreated)
+    end
+  end
 end

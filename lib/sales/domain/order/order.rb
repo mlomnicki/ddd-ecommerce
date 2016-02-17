@@ -28,11 +28,20 @@ module Sales
           apply OrderCreated.new(order_id: id, customer_id: customer_id)
         end
 
+        def expire
+          check_if_draft
+          apply OrderExpired.new(order_id: id)
+        end
+
         private
         attr_accessor :state, :customer_id, :items
 
         def apply_order_created(event)
           @state = :created
+        end
+
+        def apply_order_expired(event)
+          @state = :expired
         end
 
         def apply_item_added_to_order(event)

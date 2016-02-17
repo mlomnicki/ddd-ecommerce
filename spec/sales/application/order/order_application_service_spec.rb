@@ -20,6 +20,12 @@ RSpec.describe Sales::Application::Order::OrderApplicationService do
     )
   end
 
+  let(:expired_order_command) do
+    Sales::Application::Order::ExpireOrderCommand.new(
+      order_id: 1
+    )
+  end
+
   subject { described_class.new(repository) }
 
   describe "#create_order" do
@@ -44,6 +50,18 @@ RSpec.describe Sales::Application::Order::OrderApplicationService do
 
       expect(event_store).to publish_events([
         Sales::Domain::Order::ItemAddedToOrder.new(order_id: command.order_id, product_id: command.product_id)
+      ])
+    end
+  end
+
+  describe "#expire_order" do
+    let(:command) { expired_order_command }
+
+    it "expires an order" do
+      subject.expire_order(command)
+
+      expect(event_store).to publish_events([
+        Sales::Domain::Order::OrderExpired.new(order_id: command.order_id)
       ])
     end
   end

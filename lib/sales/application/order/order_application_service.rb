@@ -18,6 +18,12 @@ module Sales
           end
         end
 
+        def expire_order(command)
+          with_aggregate(command) do |order|
+            order.expire
+          end
+        end
+
         private
 
         def with_aggregate(command)
