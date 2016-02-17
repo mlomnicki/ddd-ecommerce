@@ -34,13 +34,14 @@ module Sales
         end
 
         private
+
         attr_accessor :state, :customer_id, :items
 
-        def apply_order_created(event)
+        def apply_order_created(_event)
           @state = :created
         end
 
-        def apply_order_expired(event)
+        def apply_order_expired(_event)
           @state = :expired
         end
 

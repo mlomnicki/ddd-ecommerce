@@ -1,0 +1,47 @@
+AllCops:
+  Include:
+    - '**/Rakefile'
+  Exclude:
+    - bin/**/*
+
+Documentation:
+  Enabled: false
+
+FormatString:
+  Enabled: false
+
+StringLiterals:
+  Enabled: false
+
+LineLength:
+  Max: 120
+
+MethodLength:
+  Max: 15
+
+SignalException:
+  EnforcedStyle: only_raise
+
+Style/RaiseArgs:
+  EnforcedStyle: exploded
+
+Style/NumericLiterals:
+  Enabled: false
+
+Style/PredicateName:
+  Enabled: false
+
+Style/IndentArray:
+  Enabled: false
+
+Style/SymbolProc:
+  Enabled: false
+
+DotPosition:
+  EnforcedStyle: trailing
+
+Style/MultilineOperationIndentation:
+  EnforcedStyle: indented
+
+Style/GuardClause:
+  Enabled: false

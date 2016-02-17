@@ -20,7 +20,7 @@ module Common
     end
 
     def event_type_underscored(event)
-      event.event_type.gsub!(/(.)([A-Z])/,'\1_\2').downcase
+      event.event_type.gsub!(/(.)([A-Z])/, '\1_\2').downcase
     end
   end
 end

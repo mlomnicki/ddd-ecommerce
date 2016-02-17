@@ -26,6 +26,7 @@ module Sales
         end
 
         private
+
         attr_reader :event_store
       end
     end
