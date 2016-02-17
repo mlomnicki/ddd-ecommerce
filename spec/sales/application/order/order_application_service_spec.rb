@@ -35,7 +35,7 @@ RSpec.describe Sales::Application::Order::OrderApplicationService do
       service.add_item_to_order(add_item_command)
       service.create_order(command)
 
-      expect(event_store).to publish_events([
+      expect(event_store).to receive_events([
         Sales::Domain::Order::ItemAddedToOrder.new(order_id: command.order_id, product_id: add_item_command.product_id),
         Sales::Domain::Order::OrderCreated.new(order_id: command.order_id, customer_id: command.customer_id)
       ])
@@ -48,7 +48,7 @@ RSpec.describe Sales::Application::Order::OrderApplicationService do
     it "adds an item to order" do
       service.add_item_to_order(command)
 
-      expect(event_store).to publish_events([
+      expect(event_store).to receive_events([
         Sales::Domain::Order::ItemAddedToOrder.new(order_id: command.order_id, product_id: command.product_id)
       ])
     end
@@ -60,7 +60,7 @@ RSpec.describe Sales::Application::Order::OrderApplicationService do
     it "expires an order" do
       service.expire_order(command)
 
-      expect(event_store).to publish_events([
+      expect(event_store).to receive_events([
         Sales::Domain::Order::OrderExpired.new(order_id: command.order_id)
       ])
     end

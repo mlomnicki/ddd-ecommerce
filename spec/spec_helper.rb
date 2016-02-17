@@ -1,5 +1,5 @@
 require 'ddd_shop'
-require 'support/publish_events_matcher'
+require 'support/receive_events_matcher'
 require 'support/raise_events_matcher'
 require 'sales/setup'
 
