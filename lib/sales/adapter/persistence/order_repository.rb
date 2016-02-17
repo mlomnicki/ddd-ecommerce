@@ -1,28 +1,12 @@
+require_relative 'abstract_repository'
+
 module Sales
   module Adapter
     module Persistence
-      class OrderRepository
-        def initialize(event_store)
-          @event_store = event_store
+      class OrderRepository < AbstractRepository
+        def aggregate_class
+          Domain::Order::Order
         end
-
-        def load(aggregate_id)
-          ::Sales::Domain::Order::Order.new(aggregate_id).tap do |aggregate|
-            events = event_store.read_all_events(aggregate_id)
-            events.each do |event|
-              aggregate.apply_old_event(event)
-            end
-          end
-        end
-
-        def save(aggregate)
-          aggregate.unpublished_events.each do |event|
-            event_store.publish_event(event, aggregate.id)
-          end
-        end
-
-        private
-        attr_reader :event_store
       end
     end
   end
