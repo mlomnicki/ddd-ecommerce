@@ -1,6 +1,7 @@
 require_relative '../common/aggregate_root'
 require_relative '../common/event'
 require_relative '../common/command'
+require_relative '../common/domain/money'
 require_relative 'domain/order/order'
 require_relative 'domain/order/order_created'
 require_relative 'domain/order/order_expired'
