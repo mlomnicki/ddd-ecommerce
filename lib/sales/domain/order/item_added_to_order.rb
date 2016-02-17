@@ -1,7 +1,7 @@
 module Sales
   module Domain
     module Order
-      class ItemAddedToOrder < Dry::Data::Value
+      class ItemAddedToOrder < Common::Event
         attribute :order_id,   Types::Int
         attribute :product_id, Types::Int
       end

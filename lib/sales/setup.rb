@@ -1,4 +1,5 @@
 require_relative '../common/aggregate_root'
+require_relative '../common/event'
 require_relative 'domain/order/order'
 require_relative 'domain/order/order_created'
 require_relative 'domain/order/item_added_to_order'
