@@ -6,6 +6,12 @@ module Sales
           @order_repository = order_repository
         end
 
+        def add_item_to_order(command)
+          with_aggregate(command) do |order|
+            order.add_item(command.product_id)
+          end
+        end
+
         def create_order(command)
           with_aggregate(command) do |order|
             order.create(command.customer_id)

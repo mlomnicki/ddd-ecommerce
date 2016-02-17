@@ -1,6 +1,8 @@
 require_relative '../common/aggregate_root'
 require_relative 'domain/order/order'
 require_relative 'domain/order/order_created'
+require_relative 'domain/order/item_added_to_order'
 require_relative 'application/order/order_application_service'
 require_relative 'application/order/create_order_command'
+require_relative 'application/order/add_item_to_order_command'
 require_relative 'adapter/persistence/order_repository'

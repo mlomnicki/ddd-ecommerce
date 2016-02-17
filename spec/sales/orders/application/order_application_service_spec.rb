@@ -24,4 +24,21 @@ RSpec.describe Sales::Application::Order::OrderApplicationService do
       ])
     end
   end
+
+  describe "#add_item_to_order" do
+    let(:command) do
+      Sales::Application::Order::AddItemToOrderCommand.new(
+        order_id:   1,
+        product_id: 2
+      )
+    end
+
+    it "should add an item to order" do
+      subject.add_item_to_order(command)
+
+      expect(event_store).to publish_events([
+        Sales::Domain::Order::ItemAddedToOrder.new(order_id: command.order_id, product_id: command.product_id)
+      ])
+    end
+  end
 end
