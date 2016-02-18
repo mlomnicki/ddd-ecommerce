@@ -1,4 +1,4 @@
-require 'ddd_shop'
+require 'ddd_ecommerce'
 require 'support/receive_events_matcher'
 require 'support/raise_events_matcher'
 require 'sales/setup'
