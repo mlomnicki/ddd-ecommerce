@@ -1,29 +1,28 @@
 require 'spec_helper'
 require 'sales/setup'
 require 'support/fake_event_store'
+require 'support/sales_helper'
 
 RSpec.describe Sales::Application::Order::OrderApplicationService do
-  let(:event_store) { FakeEventStore.new }
-  let(:repository)  { Sales::Adapter::Persistence::OrderRepository.new(event_store) }
+  include SalesHelper
 
-  let(:order_id)    { 1 }
-  let(:customer_id) { 15 }
-  let(:product_id)  { 30 }
-  let(:price)       { Common::Domain::Money.from_float(25.99) }
+  let(:event_store)        { FakeEventStore.new }
+  let(:order_repository)   { Sales::Adapter::Persistence::OrderRepository.new(event_store) }
+  let(:product_repository) { Sales::Adapter::Persistence::ProductRepository.new([product]) }
 
   let(:create_order_command) do
     Sales::Application::Order::CreateOrderCommand.new(order_id: order_id, customer_id: customer_id)
   end
 
   let(:add_item_command) do
-    Sales::Application::Order::AddItemToOrderCommand.new(order_id: order_id, product_id: product_id)
+    Sales::Application::Order::AddItemToOrderCommand.new(order_id: order_id, product_id: product.id)
   end
 
   let(:expired_order_command) do
     Sales::Application::Order::ExpireOrderCommand.new(order_id: order_id)
   end
 
-  let(:service) { described_class.new(repository, price) }
+  let(:service) { described_class.new(order_repository, product_repository) }
 
   describe "#create_order" do
     it "creates a new order" do
@@ -31,7 +30,7 @@ RSpec.describe Sales::Application::Order::OrderApplicationService do
       service.create_order(create_order_command)
 
       expect(event_store).to receive_events([
-        Sales::Domain::Order::ItemAddedToOrder.new(order_id: order_id, product_id: product_id, price: price.to_i),
+        Sales::Domain::Order::ItemAddedToOrder.new(order_id: order_id, product_id: product.id, price: product.price.to_i),
         Sales::Domain::Order::OrderCreated.new(order_id: order_id, customer_id: customer_id)
       ])
     end
@@ -42,8 +41,16 @@ RSpec.describe Sales::Application::Order::OrderApplicationService do
       service.add_item_to_order(add_item_command)
 
       expect(event_store).to receive_events([
-        Sales::Domain::Order::ItemAddedToOrder.new(order_id: order_id, product_id: product_id, price: price.to_i)
+        Sales::Domain::Order::ItemAddedToOrder.new(order_id: order_id, product_id: product.id, price: product.price.to_i)
       ])
+    end
+
+    it "raises an error if product cannot be found" do
+      expect do
+        service.add_item_to_order(
+          Sales::Application::Order::AddItemToOrderCommand.new(order_id: order_id, product_id: 321)
+        )
+      end.to raise_error(described_class::UnknownProduct)
     end
   end
 
