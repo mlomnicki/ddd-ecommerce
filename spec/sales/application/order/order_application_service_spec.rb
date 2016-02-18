@@ -10,8 +10,8 @@ RSpec.describe Sales::Application::Order::OrderApplicationService do
   let(:order_repository)   { Sales::Adapter::Persistence::OrderRepository.new(event_store) }
   let(:product_repository) { Sales::Adapter::Persistence::ProductRepository.new([product]) }
 
-  let(:create_order_command) do
-    Sales::Application::Order::CreateOrderCommand.new(order_id: order_id, customer_id: customer_id)
+  let(:place_order_command) do
+    Sales::Application::Order::PlaceOrderCommand.new(order_id: order_id, customer_id: customer_id)
   end
 
   let(:add_item_command) do
@@ -24,14 +24,14 @@ RSpec.describe Sales::Application::Order::OrderApplicationService do
 
   let(:service) { described_class.new(order_repository, product_repository) }
 
-  describe "#create_order" do
+  describe "#place_order" do
     it "creates a new order" do
       service.add_item_to_order(add_item_command)
-      service.create_order(create_order_command)
+      service.place_order(place_order_command)
 
       expect(event_store).to receive_events([
         Sales::Domain::Order::ItemAddedToOrder.new(order_id: order_id, product_id: product.id, price: product.price.to_i),
-        Sales::Domain::Order::OrderCreated.new(order_id: order_id, customer_id: customer_id)
+        Sales::Domain::Order::OrderPlaced.new(order_id: order_id, customer_id: customer_id)
       ])
     end
   end

@@ -8,26 +8,26 @@ RSpec.describe Sales::Domain::Order::Order do
 
   let(:order) { described_class.new(aggregate_id) }
 
-  describe "#create" do
-    it "creates an order" do
+  describe "#place" do
+    it "places an order" do
       order.add_item(product_id, price)
-      order.create(customer_id)
+      order.place(customer_id)
 
       expect(order).to raise_events([
         Sales::Domain::Order::ItemAddedToOrder.new(order_id: aggregate_id, product_id: product_id, price: price.to_i),
-        Sales::Domain::Order::OrderCreated.new(order_id: aggregate_id, customer_id: customer_id)
+        Sales::Domain::Order::OrderPlaced.new(order_id: aggregate_id, customer_id: customer_id)
       ])
     end
 
-    it "does not allow to create an empty order" do
-      expect { order.create(customer_id) }.to raise_error(described_class::MissingItems)
+    it "does not allow to place an empty order" do
+      expect { order.place(customer_id) }.to raise_error(described_class::MissingItems)
     end
 
-    it "does not allow to create an already created order" do
+    it "does not allow to place an already placed order" do
       order.add_item(product_id, price)
-      order.create(customer_id)
+      order.place(customer_id)
 
-      expect { order.create(customer_id) }.to raise_error(described_class::AlreadyCreated)
+      expect { order.place(customer_id) }.to raise_error(described_class::AlreadyPlaced)
     end
   end
 
@@ -40,11 +40,11 @@ RSpec.describe Sales::Domain::Order::Order do
       ])
     end
 
-    it "does not allow to add items to created order" do
+    it "does not allow to add items to placed order" do
       order.add_item(product_id, price)
-      order.create(customer_id)
+      order.place(customer_id)
 
-      expect { order.add_item(product_id, price) }.to raise_error(described_class::AlreadyCreated)
+      expect { order.add_item(product_id, price) }.to raise_error(described_class::AlreadyPlaced)
     end
   end
 
@@ -57,11 +57,11 @@ RSpec.describe Sales::Domain::Order::Order do
       ])
     end
 
-    it "does not allow to expire a created order" do
+    it "does not allow to expire a placed order" do
       order.add_item(product_id, price)
-      order.create(customer_id)
+      order.place(customer_id)
 
-      expect { order.expire }.to raise_error(described_class::AlreadyCreated)
+      expect { order.expire }.to raise_error(described_class::AlreadyPlaced)
     end
   end
 end

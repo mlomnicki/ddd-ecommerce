@@ -6,8 +6,8 @@ module Sales
       class Order
         include Common::AggregateRoot
 
-        AlreadyCreated = Class.new(StandardError)
-        MissingItems   = Class.new(StandardError)
+        AlreadyPlaced = Class.new(StandardError)
+        MissingItems  = Class.new(StandardError)
 
         attr_reader :id
 
@@ -22,10 +22,10 @@ module Sales
           apply ItemAddedToOrder.new(order_id: id, price: price.amount_in_cents, product_id: product_id)
         end
 
-        def create(customer_id)
+        def place(customer_id)
           check_if_draft
           check_if_items_available
-          apply OrderCreated.new(order_id: id, customer_id: customer_id)
+          apply OrderPlaced.new(order_id: id, customer_id: customer_id)
         end
 
         def expire
@@ -37,8 +37,8 @@ module Sales
 
         attr_accessor :state, :customer_id, :items
 
-        def apply_order_created(_event)
-          @state = :created
+        def apply_order_placed(_event)
+          @state = :placed
         end
 
         def apply_order_expired(_event)
@@ -50,7 +50,7 @@ module Sales
         end
 
         def check_if_draft
-          raise AlreadyCreated unless state == :draft
+          raise AlreadyPlaced unless state == :draft
         end
 
         def check_if_items_available

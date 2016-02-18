@@ -21,9 +21,9 @@ module Sales
           end
         end
 
-        def create_order(command)
+        def place_order(command)
           order_repository.store(command.order_id) do |order|
-            order.create(command.customer_id)
+            order.place(command.customer_id)
           end
         end
 
