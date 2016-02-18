@@ -5,3 +5,6 @@
 # Running tests
 
     $ rake
+
+    $ mutant --use rspec "Sales::Domain*"
+    $ mutant --use rspec "Sales::Application*"
