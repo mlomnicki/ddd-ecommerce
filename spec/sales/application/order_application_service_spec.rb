@@ -1,6 +1,4 @@
 require 'spec_helper'
-require 'sales/setup'
-require 'support/fake_event_store'
 require 'support/sales_helper'
 
 RSpec.describe Sales::Application::Order::OrderApplicationService do

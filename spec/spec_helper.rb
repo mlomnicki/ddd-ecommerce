@@ -1,7 +1,8 @@
 require 'ddd_ecommerce'
+require 'support/fake_event_store'
 require 'support/receive_events_matcher'
 require 'support/raise_events_matcher'
-require 'sales/setup'
+require 'sales/sales'
 
 RSpec.configure do |config|
   config.expect_with :rspec do |expectations|

@@ -1,3 +1,6 @@
+require 'sales/adapter/persistence/order_repository'
+require 'sales/adapter/persistence/product_repository'
+
 module SalesHelper
   def order_id
     1
