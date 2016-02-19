@@ -9,3 +9,7 @@
 
     $ mutant --use rspec "Sales::Domain*"
     $ mutant --use rspec "Sales::Application*"
+
+# Credits
+
+* Mirek Pragłowski for his [cqrs-es-sample](https://github.com/mpraglowski/cqrs-es-sample-with-res)
