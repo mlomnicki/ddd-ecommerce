@@ -3,6 +3,7 @@ AllCops:
     - '**/Rakefile'
   Exclude:
     - bin/**/*
+    - lib/common/value_object.rb
 
 Documentation:
   Enabled: false
