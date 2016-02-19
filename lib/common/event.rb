@@ -1,7 +1,7 @@
 require 'securerandom'
 
 module Common
-  class Event < Dry::Data::Value
+  class Event < ValueObject
     def id
       SecureRandom.uuid
     end

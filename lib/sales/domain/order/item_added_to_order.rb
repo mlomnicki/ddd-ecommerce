@@ -1,11 +1,7 @@
 module Sales
   module Domain
     module Order
-      class ItemAddedToOrder < Common::Event
-        attribute :order_id,   Types::Int
-        attribute :product_id, Types::Int
-        attribute :price,      Types::Int
-      end
+      ItemAddedToOrder = Common::Event.new(:order_id, :product_id, :price)
     end
   end
 end

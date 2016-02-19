@@ -1,4 +1,5 @@
 require_relative '../common/aggregate_root'
+require_relative '../common/value_object'
 require_relative '../common/event'
 require_relative '../common/command'
 require_relative '../common/domain/money'
