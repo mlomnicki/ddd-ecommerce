@@ -1,3 +1,4 @@
+require "common/money"
 require "dry/data"
 
 module Types

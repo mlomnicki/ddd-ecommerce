@@ -4,7 +4,7 @@ RSpec.describe Sales::Domain::Order::Order do
   let(:aggregate_id) { 1 }
   let(:customer_id)  { 12 }
   let(:product_id)   { 5 }
-  let(:unit_price)   { Common::Domain::Money.from_float(12.50) }
+  let(:unit_price)   { Money.from_float(12.50) }
 
   let(:order) { described_class.new(aggregate_id) }
 
@@ -66,10 +66,10 @@ RSpec.describe Sales::Domain::Order::Order do
   end
 
   describe "#apply_discount" do
-    let(:product_price) { Common::Domain::Money.from_float(21) }
-    let(:discount)      { Common::Domain::Money.from_float(5.5) }
+    let(:product_price) { Money.from_float(21) }
+    let(:discount)      { Money.from_float(5.5) }
 
-    let(:expected_price)  { Common::Domain::Money.from_float(15.5) }
+    let(:expected_price)  { Money.from_float(15.5) }
 
     it "applies discount to order" do
       order.add_item(product_id, product_price)

@@ -1,4 +1,2 @@
-module Common
-  class Command < Dry::Data::Struct
-  end
+class Command < Dry::Data::Struct
 end

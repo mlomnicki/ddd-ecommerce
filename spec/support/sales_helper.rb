@@ -11,7 +11,7 @@ module SalesHelper
     Sales::Domain::ProductCatalog::Product.new(
       1,
       "Implementing DDD",
-      Common::Domain::Money.from_float(25.99)
+      Money.from_float(25.99)
     )
   end
 end

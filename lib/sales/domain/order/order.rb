@@ -4,7 +4,7 @@ module Sales
   module Domain
     module Order
       class Order
-        include Common::AggregateRoot
+        include AggregateRoot
 
         AlreadyPlaced = Class.new(StandardError)
         MissingItems  = Class.new(StandardError)
@@ -15,7 +15,7 @@ module Sales
           @id       = id
           @state    = :draft
           @items    = []
-          @discount_amount = Common::Domain::Money.zero
+          @discount_amount = Money.zero
         end
 
         def add_item(product_id, price)
@@ -60,7 +60,7 @@ module Sales
         end
 
         def total_price
-          items.map(&:price).reduce(Common::Domain::Money.zero, :+) - discount_amount
+          items.map(&:price).reduce(Money.zero, :+) - discount_amount
         end
 
         def check_if_draft
