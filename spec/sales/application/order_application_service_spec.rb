@@ -30,8 +30,8 @@ RSpec.describe Sales::Application::Order::OrderApplicationService do
       service.place_order(place_order_command)
 
       expect(event_store).to receive_events([
-        Sales::Domain::Order::ItemAddedToOrder.new(order_id: order_id, product_id: product.id, price: product.price),
-        Sales::Domain::Order::OrderPlaced.new(order_id: order_id, customer_id: customer_id, total_price: product.price)
+        Sales::Domain::ItemAddedToOrder.new(order_id: order_id, product_id: product.id, price: product.price),
+        Sales::Domain::OrderPlaced.new(order_id: order_id, customer_id: customer_id, total_price: product.price)
       ])
     end
   end
@@ -41,7 +41,7 @@ RSpec.describe Sales::Application::Order::OrderApplicationService do
       service.add_item_to_order(add_item_command)
 
       expect(event_store).to receive_events([
-        Sales::Domain::Order::ItemAddedToOrder.new(order_id: order_id, product_id: product.id, price: product.price)
+        Sales::Domain::ItemAddedToOrder.new(order_id: order_id, product_id: product.id, price: product.price)
       ])
     end
 
@@ -59,7 +59,7 @@ RSpec.describe Sales::Application::Order::OrderApplicationService do
       service.expire_order(expired_order_command)
 
       expect(event_store).to receive_events([
-        Sales::Domain::Order::OrderExpired.new(order_id: order_id)
+        Sales::Domain::OrderExpired.new(order_id: order_id)
       ])
     end
   end

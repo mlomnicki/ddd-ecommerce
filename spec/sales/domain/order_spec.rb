@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-RSpec.describe Sales::Domain::Order::Order do
+RSpec.describe Sales::Domain::Order do
   let(:aggregate_id) { 1 }
   let(:customer_id)  { 12 }
   let(:product_id)   { 5 }
@@ -14,8 +14,8 @@ RSpec.describe Sales::Domain::Order::Order do
       order.place(customer_id)
 
       expect(order).to raise_events([
-        Sales::Domain::Order::ItemAddedToOrder.new(order_id: aggregate_id, product_id: product_id, price: unit_price),
-        Sales::Domain::Order::OrderPlaced.new(order_id: aggregate_id, customer_id: customer_id, total_price: unit_price)
+        Sales::Domain::ItemAddedToOrder.new(order_id: aggregate_id, product_id: product_id, price: unit_price),
+        Sales::Domain::OrderPlaced.new(order_id: aggregate_id, customer_id: customer_id, total_price: unit_price)
       ])
     end
 
@@ -36,7 +36,7 @@ RSpec.describe Sales::Domain::Order::Order do
       order.add_item(product_id, unit_price)
 
       expect(order).to raise_events([
-        Sales::Domain::Order::ItemAddedToOrder.new(order_id: aggregate_id, product_id: product_id, price: unit_price)
+        Sales::Domain::ItemAddedToOrder.new(order_id: aggregate_id, product_id: product_id, price: unit_price)
       ])
     end
 
@@ -53,7 +53,7 @@ RSpec.describe Sales::Domain::Order::Order do
       order.expire
 
       expect(order).to raise_events([
-        Sales::Domain::Order::OrderExpired.new(order_id: aggregate_id)
+        Sales::Domain::OrderExpired.new(order_id: aggregate_id)
       ])
     end
 
@@ -77,9 +77,9 @@ RSpec.describe Sales::Domain::Order::Order do
       order.place(customer_id)
 
       expect(order).to raise_events([
-        Sales::Domain::Order::ItemAddedToOrder.new(order_id: aggregate_id, product_id: product_id, price: product_price),
-        Sales::Domain::Order::DiscountApplied.new(order_id: aggregate_id, amount: discount),
-        Sales::Domain::Order::OrderPlaced.new(order_id: aggregate_id, customer_id: customer_id, total_price: expected_price)
+        Sales::Domain::ItemAddedToOrder.new(order_id: aggregate_id, product_id: product_id, price: product_price),
+        Sales::Domain::DiscountApplied.new(order_id: aggregate_id, amount: discount),
+        Sales::Domain::OrderPlaced.new(order_id: aggregate_id, customer_id: customer_id, total_price: expected_price)
       ])
     end
 
@@ -89,9 +89,9 @@ RSpec.describe Sales::Domain::Order::Order do
       order.place(customer_id)
 
       expect(order).to raise_events([
-        Sales::Domain::Order::DiscountApplied.new(order_id: aggregate_id, amount: discount),
-        Sales::Domain::Order::ItemAddedToOrder.new(order_id: aggregate_id, product_id: product_id, price: product_price),
-        Sales::Domain::Order::OrderPlaced.new(order_id: aggregate_id, customer_id: customer_id, total_price: expected_price)
+        Sales::Domain::DiscountApplied.new(order_id: aggregate_id, amount: discount),
+        Sales::Domain::ItemAddedToOrder.new(order_id: aggregate_id, product_id: product_id, price: product_price),
+        Sales::Domain::OrderPlaced.new(order_id: aggregate_id, customer_id: customer_id, total_price: expected_price)
       ])
     end
 

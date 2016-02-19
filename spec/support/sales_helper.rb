@@ -8,7 +8,7 @@ module SalesHelper
   end
 
   def product
-    Sales::Domain::ProductCatalog::Product.new(
+    Sales::Domain::Product.new(
       1,
       "Implementing DDD",
       Money.from_float(25.99)

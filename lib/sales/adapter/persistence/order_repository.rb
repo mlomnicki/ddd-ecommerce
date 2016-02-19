@@ -5,7 +5,7 @@ module Sales
     module Persistence
       class OrderRepository < AbstractRepository
         def aggregate_class
-          Domain::Order::Order
+          Domain::Order
         end
       end
     end
