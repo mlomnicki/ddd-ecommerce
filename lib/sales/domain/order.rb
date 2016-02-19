@@ -5,9 +5,6 @@ module Sales
     class Order
       include AggregateRoot
 
-      AlreadyPlaced = Class.new(StandardError)
-      MissingItems  = Class.new(StandardError)
-
       attr_reader :id
 
       def initialize(id)
@@ -63,11 +60,11 @@ module Sales
       end
 
       def check_if_draft
-        raise AlreadyPlaced unless state == :draft
+        raise OrderAlreadyPlaced unless state == :draft
       end
 
       def check_if_items_available
-        raise MissingItems if items.empty?
+        raise MissingOrderItems if items.empty?
       end
     end
   end

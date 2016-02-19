@@ -20,14 +20,14 @@ RSpec.describe Sales::Domain::Order do
     end
 
     it "does not allow to place an empty order" do
-      expect { order.place(customer_id) }.to raise_error(described_class::MissingItems)
+      expect { order.place(customer_id) }.to raise_error(Sales::MissingOrderItems)
     end
 
     it "does not allow to place an already placed order" do
       order.add_item(product_id, unit_price)
       order.place(customer_id)
 
-      expect { order.place(customer_id) }.to raise_error(described_class::AlreadyPlaced)
+      expect { order.place(customer_id) }.to raise_error(Sales::OrderAlreadyPlaced)
     end
   end
 
@@ -44,7 +44,7 @@ RSpec.describe Sales::Domain::Order do
       order.add_item(product_id, unit_price)
       order.place(customer_id)
 
-      expect { order.add_item(product_id, unit_price) }.to raise_error(described_class::AlreadyPlaced)
+      expect { order.add_item(product_id, unit_price) }.to raise_error(Sales::OrderAlreadyPlaced)
     end
   end
 
@@ -61,7 +61,7 @@ RSpec.describe Sales::Domain::Order do
       order.add_item(product_id, unit_price)
       order.place(customer_id)
 
-      expect { order.expire }.to raise_error(described_class::AlreadyPlaced)
+      expect { order.expire }.to raise_error(Sales::OrderAlreadyPlaced)
     end
   end
 
@@ -99,7 +99,7 @@ RSpec.describe Sales::Domain::Order do
       order.add_item(product_id, product_price)
       order.place(customer_id)
 
-      expect { order.apply_discount(discount) }.to raise_error(described_class::AlreadyPlaced)
+      expect { order.apply_discount(discount) }.to raise_error(Sales::OrderAlreadyPlaced)
     end
   end
 end
