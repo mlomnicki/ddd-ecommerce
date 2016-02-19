@@ -12,20 +12,21 @@ module Sales
         attr_reader :id
 
         def initialize(id)
-          @id    = id
-          @state = :draft
-          @items = []
+          @id       = id
+          @state    = :draft
+          @items    = []
+          @discount_amount = Common::Domain::Money.zero
         end
 
         def add_item(product_id, price)
           check_if_draft
-          apply ItemAddedToOrder.new(order_id: id, price: price.amount_in_cents, product_id: product_id)
+          apply ItemAddedToOrder.new(order_id: id, price: price, product_id: product_id)
         end
 
         def place(customer_id)
           check_if_draft
           check_if_items_available
-          apply OrderPlaced.new(order_id: id, customer_id: customer_id)
+          apply OrderPlaced.new(order_id: id, customer_id: customer_id, total_price: total_price)
         end
 
         def expire
@@ -33,9 +34,14 @@ module Sales
           apply OrderExpired.new(order_id: id)
         end
 
+        def apply_discount(amount)
+          check_if_draft
+          apply DiscountApplied.new(order_id: id, amount: amount)
+        end
+
         private
 
-        attr_accessor :state, :customer_id, :items
+        attr_accessor :state, :customer_id, :items, :discount_amount
 
         def apply_order_placed(_event)
           @state = :placed
@@ -46,7 +52,15 @@ module Sales
         end
 
         def apply_item_added_to_order(event)
-          @items << OrderItem.new(event.product_id)
+          @items << OrderItem.new(event.product_id, event.price)
+        end
+
+        def apply_discount_applied(event)
+          @discount_amount = event.amount
+        end
+
+        def total_price
+          items.map(&:price).reduce(Common::Domain::Money.zero, :+) - discount_amount
         end
 
         def check_if_draft
