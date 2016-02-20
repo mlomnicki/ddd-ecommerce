@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-RSpec.describe Sales::Domain::OrderSaga do
+RSpec.describe Sales::OrderSaga do
   let(:saga_id)    { 10 }
   let(:order_id)   { 3 }
   let(:payment_id) { 3021 }
