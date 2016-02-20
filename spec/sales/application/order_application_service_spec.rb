@@ -1,7 +1,7 @@
 require 'spec_helper'
 require 'support/sales_helper'
 
-RSpec.describe Sales::Application::Order::OrderApplicationService do
+RSpec.describe Sales::Application::OrderApplicationService do
   include SalesHelper
 
   let(:event_store)        { FakeEventStore.new }
