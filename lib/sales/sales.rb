@@ -4,6 +4,7 @@ module Sales
 end
 
 require_relative 'domain/order'
+require_relative 'domain/order_saga'
 require_relative 'domain/product'
 require_relative 'domain/events'
 require_relative 'application/order_application_service'
