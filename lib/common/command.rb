@@ -1,2 +1,2 @@
-class Command < Dry::Data::Struct
+class Command < ValueObject
 end
