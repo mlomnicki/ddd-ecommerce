@@ -1,5 +1,6 @@
-require "common/money"
+require 'common/money'
 require 'common/aggregate_root'
+require 'common/saga'
 require 'common/value_object'
 require 'common/event'
 require 'common/command'
