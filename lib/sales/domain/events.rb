@@ -5,7 +5,7 @@ module Sales
     OrderExpired     = Event.new(:order_id)
     OrderPlaced      = Event.new(:order_id, :customer_id, :total_price)
 
-    PaymentSucceeded = Event.new(:payment_id, :order_id)
-    PaymentFailed    = Event.new(:payment_id, :order_id)
+    PaymentSucceeded = Event.new(:payment_id, :customer_id, :order_id, :amount)
+    PaymentFailed    = Event.new(:error,      :customer_id, :order_id, :amount)
   end
 end

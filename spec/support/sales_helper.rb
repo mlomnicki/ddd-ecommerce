@@ -1,5 +1,7 @@
 require 'sales/adapter/persistence/order_repository'
 require 'sales/adapter/persistence/product_repository'
+require 'sales/adapter/payment/gateway'
+require 'sales/adapter/payment/api'
 
 module SalesHelper
   def order_id
@@ -10,11 +12,15 @@ module SalesHelper
     15
   end
 
+  def payment_id
+    SecureRandom.uuid
+  end
+
+  def amount
+    Money.from_float(25.99)
+  end
+
   def product
-    Sales::Domain::Product.new(
-      1,
-      "Implementing DDD",
-      Money.from_float(25.99)
-    )
+    Sales::Domain::Product.new(1, "Implementing DDD", amount)
   end
 end
