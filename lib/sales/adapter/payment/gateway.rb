@@ -43,7 +43,11 @@ module Sales
         end
 
         def publish_event(event)
-          event_store.publish_event(event, event.order_id)
+          event_store.publish_event(event, stream_name(event.order_id))
+        end
+
+        def stream_name(order_id)
+          "order-payment$#{order_id}"
         end
       end
     end
