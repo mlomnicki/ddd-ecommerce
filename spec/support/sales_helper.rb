@@ -13,7 +13,7 @@ module SalesHelper
   end
 
   def payment_id
-    SecureRandom.uuid
+    "49ce25fa-3a09-477a-874b-3ef919f0b727"
   end
 
   def amount
