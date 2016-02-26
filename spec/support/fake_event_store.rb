@@ -7,14 +7,14 @@ class FakeEventStore
     @subscribers = Hash.new { |hash, event_type| hash[event_type] = [] }
   end
 
-  def publish_event(event, stream)
+  def publish_event(event, stream_name)
     published << event
-    @streams[stream] << event
+    @streams[stream_name] << event
     @subscribers[event.class].each { |subscriber| subscriber.handle(event) }
   end
 
-  def read_all_events(stream)
-    @streams[stream]
+  def read_all_events(stream_name)
+    @streams[stream_name]
   end
 
   def subscribe(subscriber, event_types)
