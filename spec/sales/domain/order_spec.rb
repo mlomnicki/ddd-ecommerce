@@ -65,6 +65,40 @@ RSpec.describe Sales::Domain::Order do
     end
   end
 
+  describe "#complete" do
+    before do
+    end
+
+    it "completes an order" do
+      order.add_item(product_id, unit_price)
+      order.place(customer_id)
+      order.complete
+
+      expect(order).to raise_events([
+        Sales::Domain::ItemAddedToOrder.new(order_id: aggregate_id, product_id: product_id, price: unit_price),
+        Sales::Domain::OrderPlaced.new(order_id: aggregate_id, customer_id: customer_id, total_price: unit_price),
+        Sales::Domain::OrderCompleted.new(order_id: aggregate_id)
+      ])
+    end
+
+    it "does not allow to complete an already complted order" do
+      order.add_item(product_id, unit_price)
+      order.place(customer_id)
+      order.complete
+
+      expect { order.complete }.to raise_error(Sales::OrderNotPlaced)
+    end
+
+    it "does not allow to complete an expired order" do
+      order.expire
+      expect { order.complete }.to raise_error(Sales::OrderNotPlaced)
+    end
+
+    it "does not allow to complete a draft" do
+      expect { order.complete }.to raise_error(Sales::OrderNotPlaced)
+    end
+  end
+
   describe "#apply_discount" do
     let(:product_price) { Money.from_float(21) }
     let(:discount)      { Money.from_float(5.5) }

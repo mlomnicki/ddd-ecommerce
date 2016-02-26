@@ -25,6 +25,11 @@ module Sales
         apply OrderPlaced.new(order_id: id, customer_id: customer_id, total_price: total_price)
       end
 
+      def complete
+        check_if_placed
+        apply OrderCompleted.new(order_id: id)
+      end
+
       def expire
         check_if_draft
         apply OrderExpired.new(order_id: id)
@@ -47,6 +52,10 @@ module Sales
         @state = :expired
       end
 
+      def apply_order_completed(_event)
+        @state = :completed
+      end
+
       def apply_item_added_to_order(event)
         @items << OrderItem.new(event.product_id, event.price)
       end
@@ -61,6 +70,10 @@ module Sales
 
       def check_if_draft
         raise OrderAlreadyPlaced unless state == :draft
+      end
+
+      def check_if_placed
+        raise OrderNotPlaced unless state == :placed
       end
 
       def check_if_items_available

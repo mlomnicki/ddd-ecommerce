@@ -20,6 +20,10 @@ RSpec.describe Sales::Application::OrderApplicationService do
     Sales::Application::ExpireOrder.new(order_id: order_id)
   end
 
+  let(:complete_order) do
+    Sales::Application::CompleteOrder.new(order_id: order_id)
+  end
+
   let(:service) { described_class.new(order_repository, product_repository) }
 
   describe "#place_order" do
@@ -58,6 +62,20 @@ RSpec.describe Sales::Application::OrderApplicationService do
 
       expect(event_store).to receive_events([
         Sales::Domain::OrderExpired.new(order_id: order_id)
+      ])
+    end
+  end
+
+  describe "#complete_order" do
+    it "completes an order" do
+      service.add_item_to_order(add_item)
+      service.place_order(place_order)
+      service.complete_order(complete_order)
+
+      expect(event_store).to receive_events([
+        Sales::Domain::ItemAddedToOrder.new(order_id: order_id, product_id: product.id, price: product.price),
+        Sales::Domain::OrderPlaced.new(order_id: order_id, customer_id: customer_id, total_price: product.price),
+        Sales::Domain::OrderCompleted.new(order_id: order_id)
       ])
     end
   end

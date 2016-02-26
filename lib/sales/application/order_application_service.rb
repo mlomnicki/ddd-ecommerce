@@ -32,6 +32,12 @@ module Sales
         end
       end
 
+      def complete_order(command)
+        order_repository.store(command.order_id) do |order|
+          order.complete
+        end
+      end
+
       private
 
       attr_reader :order_repository, :product_repository

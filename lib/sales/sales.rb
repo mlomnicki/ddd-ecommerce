@@ -1,6 +1,7 @@
 module Sales
   OrderAlreadyPlaced = Class.new(StandardError)
   MissingOrderItems  = Class.new(StandardError)
+  OrderNotPlaced     = Class.new(StandardError)
 end
 
 require_relative 'domain/order'
