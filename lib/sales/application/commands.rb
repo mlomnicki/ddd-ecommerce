@@ -5,6 +5,6 @@ module Sales
     ExpireOrder    = Command.new(:order_id)
     CompleteOrder  = Command.new(:order_id)
 
-    RequestPayment = Command.new(:order_id, :amount)
+    RequestPayment = Command.new(:order_id, :customer_id, :amount)
   end
 end

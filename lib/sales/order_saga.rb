@@ -13,7 +13,11 @@ module Sales
     private
 
     def request_payment(order_placed)
-      deliver Application::RequestPayment.new(order_id: order_placed.order_id, amount: order_placed.total_price)
+      deliver Application::RequestPayment.new(
+        order_id:    order_placed.order_id,
+        customer_id: order_placed.customer_id,
+        amount:      order_placed.total_price
+      )
     end
 
     def complete_order(payment_succeeded)

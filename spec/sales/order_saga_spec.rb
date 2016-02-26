@@ -11,7 +11,7 @@ RSpec.describe Sales::OrderSaga do
       saga.handle(Sales::Domain::OrderPlaced.new(order_id: order_id, customer_id: customer_id, total_price: amount))
 
       expect(saga.unprocessed_commands).to eq([
-        Sales::Application::RequestPayment.new(order_id: order_id, amount: amount)
+        Sales::Application::RequestPayment.new(order_id: order_id, customer_id: customer_id, amount: amount)
       ])
     end
   end
