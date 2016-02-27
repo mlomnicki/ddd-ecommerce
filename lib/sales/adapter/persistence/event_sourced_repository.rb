@@ -1,7 +1,7 @@
 module Sales
   module Adapter
     module Persistence
-      class AbstractRepository
+      class EventSourcedRepository
         def initialize(event_store)
           @event_store = event_store
         end

@@ -1,9 +1,9 @@
-require_relative 'abstract_repository'
+require_relative 'event_sourced_repository'
 
 module Sales
   module Adapter
     module Persistence
-      class OrderRepository < AbstractRepository
+      class OrderRepository < EventSourcedRepository
         def aggregate_class
           Domain::Order
         end
