@@ -35,6 +35,10 @@ module Sales
         apply OrderExpired.new(order_id: id)
       end
 
+      def cancel(reason)
+        apply OrderCancelled.new(order_id: id, reason: reason)
+      end
+
       def apply_discount(amount)
         check_if_draft
         apply DiscountApplied.new(order_id: id, amount: amount)
@@ -54,6 +58,10 @@ module Sales
 
       def apply_order_completed(_event)
         @state = :completed
+      end
+
+      def apply_order_cancelled(_event)
+        @state = :cancelled
       end
 
       def apply_item_added_to_order(event)

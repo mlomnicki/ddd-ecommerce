@@ -99,6 +99,23 @@ RSpec.describe Sales::Domain::Order do
     end
   end
 
+  describe "#cancel" do
+    let(:product_price) { Money.from_float(21) }
+    let(:reason)        { "out of stock" }
+
+    it "cancels an order" do
+      order.add_item(product_id, product_price)
+      order.place(customer_id)
+      order.cancel(reason)
+
+      expect(order).to raise_events([
+        Sales::Domain::ItemAddedToOrder.new(order_id: aggregate_id, product_id: product_id, price: product_price),
+        Sales::Domain::OrderPlaced.new(order_id: aggregate_id, customer_id: customer_id, total_price: product_price),
+        Sales::Domain::OrderCancelled.new(order_id: aggregate_id, reason: reason)
+      ])
+    end
+  end
+
   describe "#apply_discount" do
     let(:product_price) { Money.from_float(21) }
     let(:discount)      { Money.from_float(5.5) }

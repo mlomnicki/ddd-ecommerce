@@ -1,3 +1,4 @@
+require 'command_bus'
 require 'common/money'
 require 'common/aggregate_root'
 require 'common/saga'

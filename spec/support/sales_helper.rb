@@ -1,4 +1,5 @@
 require 'sales/adapter/persistence/order_repository'
+require 'sales/adapter/persistence/order_saga_repository'
 require 'sales/adapter/persistence/product_repository'
 require 'sales/adapter/payment/gateway'
 require 'sales/adapter/payment/api'

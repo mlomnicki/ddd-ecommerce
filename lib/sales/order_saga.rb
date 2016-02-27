@@ -2,11 +2,15 @@ module Sales
   class OrderSaga
     include Saga
 
+    def initialize(order_id)
+      @order_id = order_id
+    end
+
     def handle(event)
       case event
       when Domain::OrderPlaced      then request_payment(event)
       when Domain::PaymentSucceeded then complete_order(event)
-      when Domain::PaymentFailed    then expire_order(event)
+      when Domain::PaymentFailed    then cancel_order(event)
       end
     end
 
@@ -24,8 +28,8 @@ module Sales
       deliver Application::CompleteOrder.new(order_id: payment_succeeded.order_id)
     end
 
-    def expire_order(payment_failed)
-      deliver Application::ExpireOrder.new(order_id: payment_failed.order_id)
+    def cancel_order(payment_failed)
+      deliver Application::CancelOrder.new(order_id: payment_failed.order_id, reason: "Payment failed")
     end
   end
 end

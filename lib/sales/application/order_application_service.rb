@@ -38,6 +38,12 @@ module Sales
         end
       end
 
+      def cancel_order(command)
+        order_repository.store(command.order_id) do |order|
+          order.cancel(command.reason)
+        end
+      end
+
       private
 
       attr_reader :order_repository, :product_repository
